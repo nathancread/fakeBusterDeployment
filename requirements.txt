@@ -9,7 +9,6 @@ scipy
 sklearn
 nltk
 requests
-json
 selectorlib
 random
 csv
