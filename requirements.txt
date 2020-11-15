@@ -10,5 +10,3 @@ sklearn
 nltk
 requests
 selectorlib
-csv
-pickle
