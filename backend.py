@@ -6,9 +6,8 @@ import random
 import nltk
 from nltk.tokenize import word_tokenize
 # cant access /usr/ on heroku so we download locally.
-nltk.data.path.append('./nltk_data/')
-nltk.download('punkt', './nltk_data/')
-nltk.download('wordnet', './nltk_data/')
+nltk.download('punkt')
+nltk.download('wordnet')
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer
