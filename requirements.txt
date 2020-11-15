@@ -10,6 +10,5 @@ sklearn
 nltk
 requests
 selectorlib
-random
 csv
 pickle
