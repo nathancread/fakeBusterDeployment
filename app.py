@@ -15,7 +15,7 @@ CORS(app)
 
 @app.route('/test', methods=['GET'])
 def test():
-    jsonify({"success": True}), 200
+    return jsonify({"success": True}), 200
 
 #start flask app
 if __name__ == '__main__':
