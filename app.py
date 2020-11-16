@@ -35,9 +35,9 @@ def index():
 
 
             product_data = {}
-            product_data["percentage_fake"] = num_fake/(num_real+num_fake)
-            product_data["raw_rating"] = (num_fake_stars+num_real_stars)/(num_fake+num_real)
-            product_data["adjusted_rating"] = (num_real_stars)/(num_real)
+            product_data["percentage_fake"] = int((num_fake/(num_real+num_fake))*100)
+            product_data["raw_rating"] = round((num_fake_stars+num_real_stars)/(num_fake+num_real), 2)
+            product_data["adjusted_rating"] = round((num_real_stars)/(num_real), 2)
             product_data["title"] = data["title"]
             product_data["price"] = data["price"]
             product_data["image_url"] = data["image"]
