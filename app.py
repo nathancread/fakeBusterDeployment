@@ -2,10 +2,13 @@ from flask import Flask, request, render_template
 import backend
 import sys
 import json
-app = Flask(__name__,
+app = Flask(__name__)
+"""
+,
         static_url_path='',
         static_folder='static',
         template_folder='templates')
+"""
 
 @app.route('/')
 @app.route('/search.html')

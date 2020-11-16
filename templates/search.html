@@ -55,6 +55,14 @@
 						</div>
 					</section>
 
+				<!-- Banner -->
+					<section id="product" class="major">
+						<div class="inner">
+              {% block content -%}
+              {% include "partials/product.html" %}
+              {%- endblock content %}
+            </div>
+					</section>
 				
 				<!-- Footer -->
 					<footer id="footer">
