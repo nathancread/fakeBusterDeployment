@@ -57,7 +57,11 @@
 
 				<!-- Banner -->
 					<section id="product" class="major">
-            <!-- {% include "partials/product.html" %} -->
+						<div class="inner">
+              {% block content -%}
+              {% include "partials/product.html" %}
+              {%- endblock content %}
+            </div>
 					</section>
 				
 				<!-- Footer -->
