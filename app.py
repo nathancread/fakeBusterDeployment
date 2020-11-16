@@ -38,8 +38,9 @@ def index():
             product_data["percentage_fake"] = num_fake/(num_real+num_fake)
             product_data["raw_rating"] = (num_fake_stars+num_real_stars)/(num_fake+num_real)
             product_data["adjusted_rating"] = (num_real_stars)/(num_real)
-            product_data["title"] = data["product_title"]
+            product_data["title"] = data["title"]
             product_data["price"] = data["price"]
+            product_data["image_url"] = data["image"]
             
             # return here index.html, but with the product info
             return render_template("index.html", form=form, product_data=product_data)

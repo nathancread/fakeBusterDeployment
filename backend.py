@@ -118,8 +118,8 @@ def scrape(url):
 
     out_data = {}
     out_data["title"] = data["product_title"]
-    out_data["product_id"] =  product_id
-    out_data["product_price"]  = data["product_price"]
+    out_data["id"] =  product_id
+    out_data["price"]  = data["product_price"]
     out_data["image"] = images[-1]
 
     return out_reviews, out_data
