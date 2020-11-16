@@ -1,8 +1,13 @@
 <!DOCTYPE HTML>
 <div>
   {% block content -%}
-  <p>-- Product Page will go here: {{value}} ---</p>
-  <p>--  {{value["category"]}} --<\p>
+  <p>Product Page will go here: {{value}} </p>
+  <p>title:   {{value["title"]}}</p>
+  <p>image_url: {{value["image_url"]}}</p>
+  <p>percentage_fake: {{value["percentage_fake"]}}</p>
+  <p>raw_rating: {{value["raw_rating"]}}</p>
+  <p>modified_rating: {{value["modified_rating"]}}</p>
+  <!-- I don't know how to do front end -Kyle -->
   {%- endblock content %}
 </div>
 
