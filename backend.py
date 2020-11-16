@@ -67,11 +67,10 @@ def classify(rating, category, verified, review_text):
 
     return prediction, confidence
 
-##nathan stuff
-# Create an Extractor by reading from the YAML file
-e = Extractor.from_yaml_file('selectors.yml')
 
-def scrape(url):    
+def scrape(url):   
+    e = Extractor.from_yaml_file('selectors.yml')
+
     headers = {
         'authority': 'www.amazon.com',
         'pragma': 'no-cache',
@@ -97,4 +96,24 @@ def scrape(url):
             print("Page %s must have been blocked by Amazon as the status code was %d"%(url,r.status_code))
         return None
     # Pass the HTML of the page and create 
-    return e.extract(r.text)
+    data = e.extract(r.text)
+
+    title = data["product_title"]
+    category = data["product_category"]
+    out_reviews = []
+
+    
+    for review in data["reviews"]:
+        r = {}
+        
+
+        r["rating"] = float(review["rating"][:3])
+        r["product_category"] = category
+        r["verified"] = "N" if review["verified"] is None else "Y"
+        r["review_text"] = review["content"]
+
+        out_reviews.append(r)
+
+    return out_reviews, title
+        
+
