@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import render_template
+from flask import Flask, request, render_template
 import backend
 import sys
 import json
@@ -17,8 +16,10 @@ def hello_world():
     return render_template("search.html")
 
 #title,image,percentage_FAKE_reviews,stars_without_fake,stars_with_fake
-@app.route('/reviews/<url>')
-def reviews(url):
+@app.route('/reviews',methods = ['POST'])
+def reviews():
+    url = request.form.get('url')
+
     reviews, title, image_url  = backend.scrape(url)
     myDict = {}
     myDict["title"] = title 
