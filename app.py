@@ -7,7 +7,8 @@ app = Flask(__name__,
         static_folder='static',
         template_folder='templates')
 
-@app.route('/', '/search.html')
+@app.route('/')
+@app.route('/search.html')
 def hello_world():
     return render_template("search.html")
 
