@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<div>
+<!-- <div>
 
   <div class="product">
     <img class="product-img" src="{{product_data["image_url"]}}" />
@@ -28,4 +28,48 @@
 
   <p>TESTING--Displaying the json: {{product_data}} </p>
 
-</div>
+</div> -->
+
+
+<!-- The product data -->
+<section id="contact">
+  <div class="inner">
+    <section>
+      <article>
+        <span class="image">
+          <img src="{{product_data["image_url"]}}" alt="" />
+        </span>
+        <header class="major">
+          <h3><a href="{{product_data["url"]}}" class="link">{{product_data["title"]}}</a></h3>
+          <p>Price: ${{product_data["price"]}</p>
+        </header>
+      </article>
+    </section>
+    <section class="split">
+      <section>
+        <div class="contact-method">
+          <span class="icon solid alt fa-percent"></span>
+          <h3>Percentage of Fake Reviews</h3>
+          <span>{{product_data["percentage_fake"]}}%</span>
+        </div>
+      </section>
+      <section>
+        <div class="contact-method">
+          <span class="icon alt fa-star"></span>
+          <h3>With Fake Reviews</h3>
+          <span>{{product_data["raw_rating"]}} Stars</span>
+        </div>
+      </section>
+      <section>
+        <div class="contact-method">
+          <span class="icon solid alt fa-star"></span>
+          <h3>Without Fake Reviews</h3>
+          <span>{{product_data["adjusted_rating"]}} Stars</span>
+        </div>
+      </section>
+    </section>
+  </div>
+</section>
+
+
+<p>TESTING--Displaying the json: {{product_data}} </p>

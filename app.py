@@ -41,6 +41,7 @@ def index():
             product_data["title"] = data["title"]
             product_data["price"] = data["price"]
             product_data["image_url"] = data["image"]
+            product_data["url"] = form.url.data
             
             # return here index.html, but with the product info
             return render_template("index.html", form=form, product_data=product_data)
