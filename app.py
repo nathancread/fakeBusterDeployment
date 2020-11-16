@@ -62,3 +62,7 @@ def test_func():
     print("NICER2")
     sys.stdout.flush()
     return test_string
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
