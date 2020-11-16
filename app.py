@@ -14,7 +14,7 @@ def hello_world():
     return render_template("search.html")
 
 #title,image,percentage_FAKE_reviews,stars_without_fake,stars_with_fake
-@app.route('/reviews/<url>')
+@app.route('/reviews/',methods = ['POST'])
 def reviews(url):
     reviews, title, image_url  = backend.scrape(url)
     myDict = {}
