@@ -97,23 +97,25 @@ def scrape(url):
     # Pass the HTML of the page and create 
     data = e.extract(r.text)
 
-    title = data["product_title"]
     category = data["product_category"]
-    out_reviews = []
-    images = data["images"][1:-1].split("],")
+    images = data["product_images"][1:-1].split("],")
     images = [x.split(":[")[0][1:-1] for x in images]
+    out_reviews = []
 
+
+    print(data['product_price'])
     for review in data["reviews"]:
         r = {}
-        
-
         r["rating"] = float(review["rating"][:3])
-        r["category"] = category
+        r["product_category"] = category
         r["verified"] = "N" if review["verified"] is None else "Y"
         r["review_text"] = review["content"]
-
         out_reviews.append(r)
-    return out_reviews, title, images[-1]
+
+        
+    return out_reviews, [data["product_title"], data["product_price"], images[-1]]
+        
+
 
         
 
