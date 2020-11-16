@@ -41,7 +41,7 @@ def reviews(url):
     myDict["raw_rating"]= total_stars_real/total_real
     myDict["modified_rating"]=  total_stars/total
 
-    return json.jsonify(myDict)
+    return json.dumps(myDict)
 
 @app.route('/test_func')
 def test_func():
