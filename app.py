@@ -7,9 +7,7 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/search.html')
 def hello_world():
-    product = ''
-    if 'product_url' in request.form:
-        product = request.form['product_url']
+    product = request.args.get('product_url','')
     return render_template("search.html", value=product)
 
 #title,image,percentage_FAKE_reviews,stars_without_fake,stars_with_fake
