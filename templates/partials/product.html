@@ -1,13 +1,34 @@
 <!DOCTYPE HTML>
 <div>
   {% block content -%}
-  <p>Product Page will go here: {{value}} </p>
-  <p>title:   {{value["title"]}}</p>
-  <img class="product-img" src={{value["image_url"]}}/>
-  <p>percentage_fake: {{value["percentage_fake"]}}</p>
-  <p>raw_rating: {{value["raw_rating"]}}</p>
-  <p>modified_rating: {{value["modified_rating"]}}</p>
-  <!-- I don't know how to do front end -Kyle -->
+  
+  <div class="product">
+    <img class="product-img" src="{{value["image_url"]}}"/>
+    <p class="product-title">{{value["title"]}}</p>
+    <hr class="product-divider">
+    <p class="product-price">PRICE: $(backend needs to send price)</p>
+  </div>
+
+  <div class="stat-sidebar">
+    <div class="stat">
+      <div>(%)</div>
+      <p>Percentage of Fake Reviews</p>
+      <p>{{value["percentage_fake"]}}%</p>
+    </div>
+    <div class="stat">
+      <div>(*)</div>
+      <p>Percentage of Fake Reviews</p>
+      <p>{{value["raw_rating"]}}</p>
+    </div>
+    <div class="stat">
+      <div>(*)</div>
+      <p>Without Fake Reviews</p>
+      <p>{{value["modified_rating"]}}</p>
+    </div>
+  </div>
+
+  <p>TESTING--Displaying the json: {{value}} </p>
+
   {%- endblock content %}
 </div>
 
