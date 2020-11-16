@@ -41,17 +41,18 @@
 								<h1>Amazon Fake Buster</h1>
 							</header>
 							<div class="row gtr-uniform">
+                <form>
+                  <div class="col-6 col-12-xsmall">
+                    <input type="text" name="product_url" id="product_url" value="" placeholder="URL Here" width="200%"/>
+                  </div>
+                  <div class="col-12">
+                    <ul class="actions">
+                      <li><input type="submit" name="bust" value="Bust it!" class="button next scrolly"></li>
+                      <!--<li><a href="index.html" >Bust it!</a></li>-->
+                    </ul>
+                  </div>
                                 
-								<div class="col-6 col-12-xsmall">
-									<input type="text" name="product_url" id="product_url" value="" placeholder="URL Here" width="200%"/>
-								</div>
-								<div class="col-12">
-									<ul class="actions">
-										<li><input type="submit" name="bust" value="Bust it!"></li>
-										<li><a href="index.html" class="button next scrolly">Bust it!</a></li>
-									</ul>
-                </div>
-                                
+                </form>
 							</div>
 						</div>
 					</section>
@@ -60,7 +61,9 @@
 					<section id="product" class="major">
 						<div class="inner">
               {% block content -%}
+              {% if value is not None %}
               {% include "partials/product.html" %}
+              {% endif %}
               {%- endblock content %}
             </div>
 					</section>

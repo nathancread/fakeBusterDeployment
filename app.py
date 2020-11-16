@@ -3,17 +3,15 @@ import backend
 import sys
 import json
 app = Flask(__name__)
-"""
-,
-        static_url_path='',
-        static_folder='static',
-        template_folder='templates')
-"""
 
 @app.route('/')
 @app.route('/search.html')
 def hello_world():
-    return render_template("search.html")
+    if request.form.validate_on_submit():
+        if 'bust' in request.form:
+            product = 'test'
+            return render_template("search.html", value=product)
+    return render_template("search.html", value=None)
 
 #title,image,percentage_FAKE_reviews,stars_without_fake,stars_with_fake
 @app.route('/reviews',methods = ['POST'])

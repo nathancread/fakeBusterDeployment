@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
 <div>
-  <p>-- Product Page will go here ---</p>
+  {% block content -%}
+  <p>-- Product Page will go here: {{value}} ---</p>
+  {%- endblock content %}
 </div>
 
