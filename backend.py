@@ -68,9 +68,7 @@ def classify(rating, category, verified, review_text):
     return prediction, confidence
 
 
-def scrape(url):   
-    e = Extractor.from_yaml_file('selectors.yml')
-
+def scrape(url):    
     headers = {
         'authority': 'www.amazon.com',
         'pragma': 'no-cache',
@@ -85,8 +83,7 @@ def scrape(url):
         'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
     }
 
-    # Download the page using requests
-    print("Downloading %s"%url)
+    # Download the page using request
     r = requests.get(url, headers=headers)
     # Simple check to check if page was blocked (Usually 503)
     if r.status_code > 500:
@@ -101,19 +98,20 @@ def scrape(url):
     title = data["product_title"]
     category = data["product_category"]
     out_reviews = []
+    images = data["images"][1:-1].split("],")
+    images = [x.split(":[")[0][1:-1] for x in images]
 
-    
     for review in data["reviews"]:
         r = {}
         
 
         r["rating"] = float(review["rating"][:3])
-        r["category"] = category
+        r["product_category"] = category
         r["verified"] = "N" if review["verified"] is None else "Y"
         r["review_text"] = review["content"]
 
         out_reviews.append(r)
+    return out_reviews, title, images[-1]
 
-    return out_reviews, title
         
 
