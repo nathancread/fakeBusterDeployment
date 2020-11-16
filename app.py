@@ -1,51 +1,49 @@
-from flask import Flask, request, render_template
-import backend
+from flask import Flask, request, render_template, redirect, url_for, flash
 import sys
-import json
-import requests as r
+import os
+
+import backend
+from forms import URLForm
+
+
 app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    product_url = request.args.get('product_url',None)
-    review = None
-    if product_url is not None:
-        review_r = r.post('https://amazon-fake-buster.herokuapp.com/reviews', data = {'url':product_url})
-        review = review_r.json()
-        print(str(review))
-    return render_template("search.html", value=review)
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
 
 
-@app.route('/reviews',methods = ['POST'])
-def reviews():
-    url = request.form.get('url')
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    form = URLForm()
 
-    reviews, title, image_url  = backend.scrape(url)
-    myDict = {}
-    myDict["title"] = title 
-    myDict["image_url"] = image_url 
+    # over here, form submission
+    if request.method == "POST":
+        if form.validate_on_submit():
+            print("Got form!")
+            sys.stdout.flush()
 
-    fake = 0
-    total = 0
-    total_real = 0 
-    total_stars_real = 0
-    total_stars = 0
 
-    for review in reviews:
-        predict, conf = backend.classify(review["rating"], review["category"], review["verified"], review["review_text"])
-        total+=1
-        total_stars += review["rating"]
-        if predict == "FAKE":
-            fake +=1
-        if predict == "REAL":
-            total_real+=1
-            total_stars_real += review["rating"]
 
-    myDict["percentage_fake"]= fake/total
-    myDict["raw_rating"]= total_stars_real/total_real
-    myDict["modified_rating"]=  total_stars/total
 
-    return json.dumps(myDict)
+        
+            return redirect(url_for('product_page', product_id="111"))
+        else:
+            flash("Invalid URL")
+
+    # over here, form request
+    return render_template("index.html", form=form)
+
+
+
+# product display
+@app.route('/query/<product_id>')
+def product_page(product_id):
+    print("test")
+    sys.stdout.flush()
+
+    return render_template("product.html")
+
+
+
 
 @app.route('/test_func')
 def test_func():
@@ -55,10 +53,8 @@ def test_func():
 
     for review in reviews:
         predict, conf = backend.classify(review["rating"], review["category"], review["verified"], review["review_text"])
-
         test_string += predict + " " + str(conf) +"\n"
 
-    print("NICER2")
     sys.stdout.flush()
     return test_string
 
