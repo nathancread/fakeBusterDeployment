@@ -108,7 +108,7 @@ def scrape(url):
         
 
         r["rating"] = float(review["rating"][:3])
-        r["product_category"] = category
+        r["category"] = category
         r["verified"] = "N" if review["verified"] is None else "Y"
         r["review_text"] = review["content"]
 

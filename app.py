@@ -12,12 +12,15 @@ def hello_world():
 
 @app.route('/test_func')
 def test_func():
-    rating = 1
-    product_category = "PC"
-    verified_purchase = "N"
-    review_text = "I am extremely unhappy with this fudge bar! ALL FUDGE BARS SHOULD COME WITH TWO KITTENS, AT LEAST! I DEMAND A REFUND!"
-    print("NICE")
-    predict, conf = backend.classify(rating, product_category, verified_purchase, review_text)
+    reviews, title = backend.scrape("https://www.amazon.com/Enhanced-Splashproof-Portable-Bluetooth-Radiator/dp/B010OYASRG/ref=sr_1_3?dchild=1&keywords=bluetooth%2Bspeaker&qid=1605484686&sr=8-3&th=1")
+
+    test_string = title + "\n"
+
+    for review in reviews:
+        predict, conf = backend.classify(review["rating"], review["category"], review["verified"], review["review_text"])
+
+        test_string += predict + " " + str(conf) +"\n"
+
     print("NICER2")
     sys.stdout.flush()
-    return predict + str(conf)
+    return test_string
