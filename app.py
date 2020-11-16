@@ -4,10 +4,13 @@ import backend
 import sys
 app = Flask(__name__, template_folder='templates')
 
-@app.route('/')
+@app.route('/', '/search.html')
 def hello_world():
     return render_template("search.html")
 
+@app.route('/index.html')
+def send_template(path):
+    return render_template(f"index.html")
 
 @app.route('/reviews/<url>')
 def reviews(url):
@@ -17,11 +20,6 @@ def reviews(url):
         predict, conf = backend.classify(review["rating"], review["category"], review["verified"], review["review_text"])
         test_string += predict + " " + str(conf) +"\n"
         return test_string
-
-# TESTING -Kyle
-@app.route('/<path:path>')
-def send_template(path):
-    return render_template(f"{path}.html")
 
 @app.route('/test_func')
 def test_func():
