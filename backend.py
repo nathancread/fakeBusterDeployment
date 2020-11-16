@@ -68,7 +68,9 @@ def classify(rating, category, verified, review_text):
     return prediction, confidence
 
 
-def scrape(url):    
+def scrape(url):   
+    e = Extractor.from_yaml_file('selectors.yml')
+
     headers = {
         'authority': 'www.amazon.com',
         'pragma': 'no-cache',
