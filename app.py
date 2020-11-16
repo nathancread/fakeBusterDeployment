@@ -8,6 +8,12 @@ app = Flask(__name__, template_folder='templates')
 def hello_world():
     return render_template("search.html")
 
+# TESTING -Kyle
+@app.route('/<path:path>')
+def send_template(path):
+    return render_template(f"{path}.html")
+
+
 
 
 @app.route('/test_func')
