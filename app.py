@@ -8,7 +8,9 @@ app = Flask(__name__)
 def hello_world():
     return render_template("search.html")
 
-
+@app.route('/reviews/<url>')
+def reviews(url):
+    b = backend.scrape(url)
 
 @app.route('/test_func')
 def test_func():
