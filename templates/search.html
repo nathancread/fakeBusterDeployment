@@ -61,7 +61,7 @@
 					<section id="product" class="major">
 						<div class="inner">
               {% block content -%}
-              {% if value is not None %}
+              {% if value == '' %}
               {% include "partials/product.html" %}
               {% endif %}
               {%- endblock content %}

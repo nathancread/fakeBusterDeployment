@@ -7,11 +7,10 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/search.html')
 def hello_world():
-    if request.form.validate_on_submit():
-        if 'bust' in request.form:
-            product = 'test'
-            return render_template("search.html", value=product)
-    return render_template("search.html", value=None)
+    product = ''
+    if 'product_url' in request.form:
+        product = request.form['product_url']
+    return render_template("search.html", value=product)
 
 #title,image,percentage_FAKE_reviews,stars_without_fake,stars_with_fake
 @app.route('/reviews',methods = ['POST'])
