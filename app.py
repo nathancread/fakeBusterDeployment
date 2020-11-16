@@ -19,8 +19,14 @@ def index():
     if request.method == "POST":
         if form.validate_on_submit():
             print("Got form! URL is:", form.url.data)
-            sys.stdout.flush()
             reviews, data = backend.scrape(form.url.data)
+            sys.stdout.flush()
+
+            if(reviews is None):
+                print("Something went wrong.")
+                sys.stdout.flush()
+                flash("Something went wrong, either invalid URL or internal server error.")
+                return render_template("index.html", form=form)
 
             num_fake, num_real = 0, 0
             num_fake_stars, num_real_stars = 0, 0
