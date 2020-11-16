@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<div>
+  {% block content -%}
+
+  <div class="product">
+    <img class="product-img" src="{{product_data["image_url"]}}" />
+    <p class="product-title">{{product_data["title"]}}</p>
+    <hr class="product-divider">
+    <p class="product-price">PRICE: ${{product_data["price"]}}</p>
+  </div>
+
+  <div class="stat-sidebar">
+    <div class="stat">
+      <div>(%)</div>
+      <p>Percentage of Fake Reviews</p>
+      <p>{{product_data["percentage_fake"]}}%</p>
+    </div>
+    <div class="stat">
+      <div>(*)</div>
+      <p>Percentage of Fake Reviews</p>
+      <p>{{product_data["raw_rating"]}}</p>
+    </div>
+    <div class="stat">
+      <div>(*)</div>
+      <p>Without Fake Reviews</p>
+      <p>{{product_data["adjusted_rating"]}}</p>
+    </div>
+  </div>
+
+  <p>TESTING--Displaying the json: {{product_data}} </p>
+
+  {%- endblock content %}
+</div>

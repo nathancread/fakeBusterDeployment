@@ -18,11 +18,31 @@ def index():
     # over here, form submission
     if request.method == "POST":
         if form.validate_on_submit():
-            print("Got form!")
+            print("Got form! URL is:", form.url.data)
             sys.stdout.flush()
+            reviews, data = backend.scrape(form.url.data)
 
-
+            num_fake, num_real = 0, 0
+            num_fake_stars, num_real_stars = 0, 0
             
+            for review in reviews:
+                predict, conf = backend.classify(review["rating"], review["product_category"], review["verified"], review["review_text"])
+                num_fake += 1 if predict == "FAKE" else 0
+                num_real += 0 if predict == "FAKE" else 1
+
+                num_fake_stars += review["rating"] if predict == "FAKE" else 0
+                num_real_stars += 0 if predict == "FAKE" else review["rating"]
+
+
+            product_data = {}
+            product_data["percentage_fake"] = num_fake/(num_real+num_fake)
+            product_data["raw_rating"] = (num_fake_stars+num_real_stars)/(num_fake+num_real)
+            product_data["adjusted_rating"] = (num_real_stars)/(num_real)
+            product_data["title"] = data["product_title"]
+            product_data["price"] = data["price"]
+            
+            # return here index.html, but with the product info
+            return render_template("index.html", form=form, product_data=product_data)
         else:
             flash("Invalid URL")
 

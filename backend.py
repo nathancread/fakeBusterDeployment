@@ -1,20 +1,23 @@
 from sklearn.svm import LinearSVC, SVC
-from nltk.classify import SklearnClassifier
+from sklearn import svm
+from selectorlib import Extractor
 import pickle
 import random
-from selectorlib import Extractor
 import requests 
-import json 
+import string
+import re
+
+
 import nltk
+from nltk.classify import SklearnClassifier
 from nltk.tokenize import word_tokenize
-# cant access /usr/ on heroku so we download locally.
-# nltk.download('punkt')
-# nltk.download('wordnet')
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer
 from nltk.util import ngrams
-import string
+# cant access /usr/ on heroku so we download locally.
+# nltk.download('punkt')
+# nltk.download('wordnet')
 
 
 def parseReviewText(text):
@@ -71,6 +74,9 @@ def classify(rating, category, verified, review_text):
 def scrape(url):   
     e = Extractor.from_yaml_file('selectors.yml')
 
+    prod_id_regex = re.compile(r".*/([a-zA-Z0-9]{10})(?:[/?]|$).*")
+    product_id = prod_id_regex.match(url).group(1)
+
     headers = {
         'authority': 'www.amazon.com',
         'pragma': 'no-cache',
@@ -102,8 +108,6 @@ def scrape(url):
     images = [x.split(":[")[0][1:-1] for x in images]
     out_reviews = []
 
-
-    print(data['product_price'])
     for review in data["reviews"]:
         r = {}
         r["rating"] = float(review["rating"][:3])
@@ -112,8 +116,13 @@ def scrape(url):
         r["review_text"] = review["content"]
         out_reviews.append(r)
 
-        
-    return out_reviews, [data["product_title"], data["product_price"], images[-1]]
+    out_data = {}
+    out_data["title"] = data["product_title"]
+    out_data["product_id"] =  product_id
+    out_data["product_price"]  = data["product_price"]
+    out_data["image"] = images[-1]
+
+    return out_reviews, out_data
         
 
 

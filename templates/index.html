@@ -46,6 +46,12 @@
 			</div>
 		</section>
 
+		{% block content -%}
+		{% if product_data %}
+		{% include "partials/product.html" %}
+		{% endif %}
+		{%- endblock content %}
+
 		<!-- Footer -->
 		{% include 'components/footer.html' %}
 
