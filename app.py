@@ -10,7 +10,13 @@ def hello_world():
 
 @app.route('/reviews/<url>')
 def reviews(url):
-    b = backend.scrape(url)
+    reviews, title, image_url  = backend.scrape(url)
+    test_string = title+ "\n"+image_url+"\n"
+    for review in reviews:
+        predict, conf = backend.classify(review["rating"], review["category"], review["verified"], review["review_text"])
+        test_string += predict + " " + str(conf) +"\n"
+        return test_string
+
 
 @app.route('/test_func')
 def test_func():
