@@ -2,7 +2,10 @@ from flask import Flask
 from flask import render_template
 import backend
 import sys
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__,
+        static_url_path='',
+        static_folder='static',
+        template_folder='templates')
 
 @app.route('/', '/search.html')
 def hello_world():
@@ -10,7 +13,7 @@ def hello_world():
 
 @app.route('/index.html')
 def send_template(path):
-    return render_template(f"index.html")
+    return render_template("index.html")
 
 @app.route('/reviews/<url>')
 def reviews(url):
