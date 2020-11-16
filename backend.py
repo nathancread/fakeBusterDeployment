@@ -130,6 +130,7 @@ def scrape(url):
         if retries > 10:
             print("Max retries limit reached")
             return
+        retries +=1
 
         # retry
         print("[PROX ERR] Proxy:", proxy, "failed. Trying a different proxy")
