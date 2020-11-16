@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template
 import backend
 import sys
+import json
 app = Flask(__name__,
         static_url_path='',
         static_folder='static',
@@ -16,7 +17,10 @@ def hello_world():
 @app.route('/reviews/<url>')
 def reviews(url):
     reviews, title, image_url  = backend.scrape(url)
-    test_string = title+ "\n"+image_url+"\n"
+    myDict = {}
+    myDict["title"] = title 
+    myDict["image_url"] = image_url 
+
     fake = 0
     total = 0
     total_real = 0 
@@ -33,11 +37,11 @@ def reviews(url):
             total_real+=1
             total_stars_real += review["rating"]
 
-    test_string += fake/total +"\n"
-    test_string += total_stars_real/total_real + "\n"
-    test_string += total_stars/total +"\n"
+    myDict["percentage_fake"]= fake/total
+    myDict["raw_rating"]= total_stars_real/total_real
+    myDict["modified_rating"]=  total_stars/total
 
-    #return test_string
+    return json.jsonify(myDict)
 
 @app.route('/test_func')
 def test_func():
