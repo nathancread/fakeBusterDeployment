@@ -22,25 +22,13 @@ def index():
             sys.stdout.flush()
 
 
-
-
-        
-            return redirect(url_for('product_page', product_id="111"))
+            
         else:
             flash("Invalid URL")
 
     # over here, form request
     return render_template("index.html", form=form)
 
-
-
-# product display
-@app.route('/query/<product_id>')
-def product_page(product_id):
-    print("test")
-    sys.stdout.flush()
-
-    return render_template("product.html")
 
 
 
