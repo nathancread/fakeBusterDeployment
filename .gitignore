@@ -1,3 +1,4 @@
 testing.py
 Procfile.windows
 __pycache__/
+.vscode/
