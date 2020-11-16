@@ -46,11 +46,9 @@
 			</div>
 		</section>
 
-		{% block content -%}
-		{% if product_data %}
+		{% if product_data is defined %}
 		{% include "components/product.html" %}
 		{% endif %}
-		{%- endblock content %}
 
 		<!-- Footer -->
 		{% include 'components/footer.html' %}
