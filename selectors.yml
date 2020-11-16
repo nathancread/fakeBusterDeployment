@@ -6,6 +6,11 @@ product_category:
     xpath: '//a[@class="a-link-normal a-color-tertiary"]'
     type: Text
 
+images:
+    css: '.imgTagWrapper img'
+    type: Attribute
+    attribute: data-a-dynamic-image
+
 reviews:
     css: 'div.review div.a-section.celwidget'
     multiple: true
