@@ -2,13 +2,19 @@ from flask import Flask, request, render_template
 import backend
 import sys
 import json
+import requests as r
 app = Flask(__name__)
 
 @app.route('/')
 @app.route('/search.html')
 def hello_world():
-    product = request.args.get('product_url',None)
-    return render_template("search.html", value=product)
+    product_url = request.args.get('product_url',None)
+    review = None
+    if product_url is not None:
+        review_r = r.post('https://amazon-fake-buster.herokuapp.com/reviews', data = {'url':product_url})
+        review = review_r.json
+        print(str(review))
+    return render_template("search.html", value=review)
 
 #title,image,percentage_FAKE_reviews,stars_without_fake,stars_with_fake
 @app.route('/reviews',methods = ['POST'])
