@@ -1,64 +1,63 @@
-from flask import Flask, request, render_template
-import backend
+from flask import Flask, request, render_template, redirect, url_for, flash
 import sys
-import json
-import requests as r
+import os
+
+import backend
+from forms import URLForm
+
+
 app = Flask(__name__)
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
 
-@app.route('/')
-@app.route('/search.html')
-def hello_world():
-    product_url = request.args.get('product_url',None)
-    review = None
-    if product_url is not None:
-        review_r = r.post('https://amazon-fake-buster.herokuapp.com/reviews', data = {'url':product_url})
-        review = review_r.json()
-        print(str(review))
-    return render_template("search.html", value=review)
 
-#title,image,percentage_FAKE_reviews,stars_without_fake,stars_with_fake
-@app.route('/reviews',methods = ['POST'])
-def reviews():
-    url = request.form.get('url')
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    form = URLForm()
 
-    reviews, title, image_url  = backend.scrape(url)
-    myDict = {}
-    myDict["title"] = title 
-    myDict["image_url"] = image_url 
+    # over here, form submission
+    if request.method == "POST":
+        if form.validate_on_submit():
+            print("Got form! URL is:", form.url.data)
+            reviews, data = backend.scrape(form.url.data)
+            sys.stdout.flush()
 
-    fake = 0
-    total = 0
-    total_real = 0 
-    total_stars_real = 0
-    total_stars = 0
+            if(reviews is None):
+                print("Something went wrong.")
+                sys.stdout.flush()
+                flash("Something went wrong, either invalid URL or internal server error.")
+                return render_template("index.html", form=form)
 
-    for review in reviews:
-        predict, conf = backend.classify(review["rating"], review["category"], review["verified"], review["review_text"])
-        total+=1
-        total_stars += review["rating"]
-        if predict == "FAKE":
-            fake +=1
-        if predict == "REAL":
-            total_real+=1
-            total_stars_real += review["rating"]
+            num_fake, num_real = 0, 0
+            num_fake_stars, num_real_stars = 0, 0
+            
+            for review in reviews:
+                predict, conf = backend.classify(review["rating"], review["product_category"], review["verified"], review["review_text"])
+                num_fake += 1 if predict == "FAKE" else 0
+                num_real += 0 if predict == "FAKE" else 1
 
-    myDict["percentage_fake"]= fake/total
-    myDict["raw_rating"]= total_stars_real/total_real
-    myDict["modified_rating"]=  total_stars/total
+                num_fake_stars += review["rating"] if predict == "FAKE" else 0
+                num_real_stars += 0 if predict == "FAKE" else review["rating"]
 
-    return json.dumps(myDict)
 
-@app.route('/test_func')
-def test_func():
-    reviews, title, image_url = backend.scrape("https://www.amazon.com/Enhanced-Splashproof-Portable-Bluetooth-Radiator/dp/B010OYASRG/ref=sr_1_3?dchild=1&keywords=bluetooth%2Bspeaker&qid=1605484686&sr=8-3&th=1")
+            product_data = {}
+            product_data["percentage_fake"] = int((num_fake/(num_real+num_fake))*100)
+            product_data["raw_rating"] = round((num_fake_stars+num_real_stars)/(num_fake+num_real), 2)
+            product_data["adjusted_rating"] = round((num_real_stars)/(num_real), 2)
+            product_data["title"] = data["title"]
+            product_data["price"] = data["price"]
+            product_data["image_url"] = data["image"]
+            product_data["url"] = form.url.data
+            
+            # return here index.html, but with the product info
+            return render_template("index.html", form=form, product_data=product_data)
+        else:
+            flash("Invalid URL")
 
-    test_string = title + "\n"
+    # over here, form request
+    return render_template("index.html", form=form)
 
-    for review in reviews:
-        predict, conf = backend.classify(review["rating"], review["category"], review["verified"], review["review_text"])
 
-        test_string += predict + " " + str(conf) +"\n"
 
-    print("NICER2")
-    sys.stdout.flush()
-    return test_string
+if __name__ == '__main__':
+    app.run(debug=True)
