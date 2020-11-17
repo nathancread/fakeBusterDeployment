@@ -120,7 +120,7 @@ def scrape(url):
 
     # Download the page using request
     proxies = get_proxies()
-    while(len(proxies == 0)):
+    while(len(proxies) == 0):
         proxies = get_proxies()
 
     proxy = proxies.pop()
@@ -139,8 +139,9 @@ def scrape(url):
         print("[PROX ERR] Proxy:", proxy, "failed. Trying a different proxy")
         if len(proxies) == 0:
             proxies = get_proxies()
-            while(len(proxies == 0)):
+            while(len(proxies) == 0):
                 proxies = get_proxies()
+
         proxy = proxies.pop()
         r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
 
