@@ -75,27 +75,34 @@ def classify(rating, category, verified, review_text):
     return prediction, confidence
 
 
-def get_proxies():
-    url = "https://free-proxy-list.net/"
-    test_url = "https://httpbin.org/ip"
-    response = requests.get(url)
-    parser = fromstring(response.text)
-    proxies = set()
-    for i in parser.xpath("//tbody/tr")[:10]:
-        if i.xpath('.//td[7][contains(text(),"yes")]'):
-            # Grabbing IP and corresponding PORT
-            proxy = ":".join(
-                [i.xpath(".//td[1]/text()")[0], i.xpath(".//td[2]/text()")[0]]
-            )
+# def get_proxies():
+#     url = "https://free-proxy-list.net/"
+#     test_url = "https://httpbin.org/ip"
+#     response = requests.get(url)
+#     parser = fromstring(response.text)
+#     proxies = set()
+#     for i in parser.xpath("//tbody/tr")[:10]:
+#         if i.xpath('.//td[7][contains(text(),"yes")]'):
+#             # Grabbing IP and corresponding PORT
+#             proxy = ":".join(
+#                 [i.xpath(".//td[1]/text()")[0], i.xpath(".//td[2]/text()")[0]]
+#             )
 
-            try:
-                response = requests.get(
-                    test_url, proxies={"http": proxy, "https": proxy}
-                )
-                proxies.add(proxy)
-            except:
-                pass
-    return proxies
+#             try:
+#                 response = requests.get(
+#                     test_url, proxies={"http": proxy, "https": proxy}
+#                 )
+#                 proxies.add(proxy)
+#             except:
+#                 pass
+#     return proxies
+
+# def get_gaurenteed_proxies():
+#     proxies = get_proxies()
+#     retries = 0
+#     while(len(proxies) == 0) and retries < 20:
+#         proxies = get_proxies()
+#         retries +=1
 
 
 def scrape(url):
@@ -119,42 +126,40 @@ def scrape(url):
     }
 
     # Download the page using request
-    proxies = get_proxies()
-    while(len(proxies) == 0):
-        proxies = get_proxies()
-    proxy = proxies.pop()
-    try:
-        r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
-    except:
-        pass
-    retries = 0
+    # proxies = get_gaurenteed_proxies()
+    # proxy = proxies.pop()
+    # try:
+    #     r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
+    # except:
+    #     pass
+    # retries = 0
 
-    # Simple check to check if page was blocked (Usually 503)
-    while r.status_code > 500 or r.status_code == 403:
-        # check max retires
-        if retries > 10:
-            print("Max retries limit reached")
-            return
-        retries +=1
+    # # Simple check to check if page was blocked (Usually 503)
+    # while r.status_code > 500 or r.status_code == 403:
+    #     # check max retires
+    #     if retries > 10:
+    #         print("Max retries limit reached")
+    #         return
+    #     retries +=1
 
-        # retry
-        print("[PROX ERR] Proxy:", proxy, "failed. Trying a different proxy")
-        if len(proxies) == 0:
-            proxies = get_proxies()
-            while(len(proxies) == 0):
-                proxies = get_proxies()
-        proxy = proxies.pop()
+    #     # retry
+    #     print("[PROX ERR] Proxy:", proxy, "failed. Trying a different proxy")
+    #     if len(proxies) == 0:
+    #         proxies = get_gaurenteed_proxies()
+    #     proxy = proxies.pop()
 
-        try:
-            r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
-        except:
-            pass
+    #     try:
+    #         r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
+    #     except:
+    #         pass
 
-        # if "To discuss automated access to Amazon data please contact" in r.text:
-        #     print("Page %s was blocked by Amazon. Please try using better proxies\n" % url)
-        # else:
-        #     print("Page %s must have been blocked by Amazon as the status code was %d"
-        #         % (url, r.status_code))
+
+    if r.status_code > 500:
+        if "To discuss automated access to Amazon data please contact" in r.text:
+            print("Page %s was blocked by Amazon. Please try using better proxies\n" % url)
+        else:
+            print("Page %s must have been blocked by Amazon as the status code was %d"
+                % (url, r.status_code))
 
     # Pass the HTML of the page and create
     data = e.extract(r.text)
