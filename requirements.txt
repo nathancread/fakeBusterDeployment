@@ -11,3 +11,4 @@ sklearn
 nltk
 requests
 selectorlib
+fake_useragent
