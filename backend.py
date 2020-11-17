@@ -122,13 +122,15 @@ def scrape(url):
     proxies = get_proxies()
     while(len(proxies) == 0):
         proxies = get_proxies()
-
     proxy = proxies.pop()
-    r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
+    try:
+        r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
+    except:
+        pass
     retries = 0
 
     # Simple check to check if page was blocked (Usually 503)
-    while r.status_code > 500:
+    while r.status_code > 500 or r.status_code == 403:
         # check max retires
         if retries > 10:
             print("Max retries limit reached")
@@ -141,9 +143,12 @@ def scrape(url):
             proxies = get_proxies()
             while(len(proxies) == 0):
                 proxies = get_proxies()
-
         proxy = proxies.pop()
-        r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
+
+        try:
+            r = requests.get(url, headers=headers, proxies={"http": proxy, "https": proxy})
+        except:
+            pass
 
         # if "To discuss automated access to Amazon data please contact" in r.text:
         #     print("Page %s was blocked by Amazon. Please try using better proxies\n" % url)
