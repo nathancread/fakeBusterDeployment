@@ -153,7 +153,7 @@ def scrape(url):
     #     except:
     #         pass
 
-
+    r = requests.get(url, headers=headers)
     if r.status_code > 500:
         if "To discuss automated access to Amazon data please contact" in r.text:
             print("Page %s was blocked by Amazon. Please try using better proxies\n" % url)
