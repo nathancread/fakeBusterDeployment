@@ -46,7 +46,7 @@
 			</div>
 		</section>
 
-		{% if product_data %}
+		{% if product_data is defined %}
 		{% include "components/product.html" %}
 		{% endif %}
 
